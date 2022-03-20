@@ -1,6 +1,5 @@
 ﻿using API.DTO.Request;
 using AutoMapper;
-using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,31 +9,33 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ClasseExemploController : ControllerBase
     {
-        //private readonly INotificacao _notificador;
+        private readonly INotificacao _notificacao;
         private readonly IClasseExemploService _classeExemploService;
         private readonly IMapper _mapper;
 
-        private IList<ClasseExemplo> Repositorio = new List<ClasseExemplo>();
-        public ClasseExemploController(IMapper mapper, IClasseExemploService classeExemploService)
+        public ClasseExemploController(IMapper mapper, 
+                                       IClasseExemploService classeExemploService,
+                                       INotificacao notificacao)
         {
-            //_notificador = notificador;
             _classeExemploService = classeExemploService;
+            _notificacao = notificacao;
             _mapper = mapper;
-            Repositorio.Add( new ClasseExemplo(2, 3, "propriedade 3"));
         }
 
         [HttpGet]
-        public IActionResult ObterPaginado()
+        public async Task<IActionResult> ObterPaginado([FromQuery] int skip, [FromQuery] int take)
         {
-            return Ok(_mapper.Map<IList<ClasseExemploRequestDTO>>(Repositorio));
+            var classeExemplosPaginada = await _classeExemploService.ObterPaginado(skip, take);
+            return Ok(classeExemplosPaginada);
         }
 
         [HttpPost]
         public IActionResult CadastrarNovoItem([FromBody] ClasseExemploRequestDTO request)
         {
-            /* Como temos validações das requisições, não é necessário 
-             * usar o ModelState */
-            _classeExemploService.ObterTodos(_mapper.Map<ClasseExemplo>(request));
+            if(_notificacao.TemNotificacoes())
+            {
+                return BadRequest(_notificacao.ObterNotificacoes());
+            }
 
             return Created($"api/ClasseExemplo/{request}", request);
         }

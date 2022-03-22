@@ -13,9 +13,9 @@ namespace Data.Repository
             _context = context;
         }
 
-        public Task<T> CriarEntidade()
+        public async Task CriarEntidade(T entidade)
         {
-            throw new NotImplementedException();
+            await _context.Set<T>().AddAsync(entidade);
         }
 
         public async Task<EntidadePaginate<T>> ObterPaginado(int skip, int take)

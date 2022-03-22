@@ -1,5 +1,6 @@
 ﻿using API.DTO.Request;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,16 +27,21 @@ namespace API.Controllers
         public async Task<IActionResult> ObterPaginado([FromQuery] int skip, [FromQuery] int take)
         {
             var classeExemplosPaginada = await _classeExemploService.ObterPaginado(skip, take);
+
             return Ok(classeExemplosPaginada);
         }
 
         [HttpPost]
-        public IActionResult CadastrarNovoItem([FromBody] ClasseExemploRequestDTO request)
+        public async Task<IActionResult> CadastrarNovoItem([FromBody] ClasseExemploRequestDTO request)
         {
             if(_notificacao.TemNotificacoes())
             {
                 return BadRequest(_notificacao.ObterNotificacoes());
             }
+
+            await _classeExemploService.CriarEntidade(_mapper.Map<ClasseExemplo>(request));
+
+            await _classeExemploService.SalvarAlteracoes();
 
             return Created($"api/ClasseExemplo/{request}", request);
         }

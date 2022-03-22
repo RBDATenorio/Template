@@ -6,9 +6,6 @@ namespace Domain.Services
 {
     public class ClasseExemploService : BaseService<ClasseExemplo>, IClasseExemploService
     {
-        public ClasseExemploService(IRepository<ClasseExemplo> repo) : base(repo)
-        {
-
-        }
+        public ClasseExemploService(IClasseExemploRepository repo, IUnitOfWork uow) : base(repo, uow) { }
     }
 }

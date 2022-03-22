@@ -11,6 +11,28 @@
         public int Propriedade1 { get; private set; }
         public int Propriedade2 { get; private set; }
         public string? Propriedade3 { get; private set; }
+        public int Propriedade4 { get; private set; }
+        public DateTime Propriedade5 { get; private set; }
+        public DateTime Propriedade6 { get; private set; }
+        public DateTime Propriedade7 { get; private set; }
+        public bool Propriedade8 { get; private set; }
+        public bool Propriedade9 { get; private set; }
+        public string? Propriedade10 { get; private set; }
+        public string? Propriedade11 { get; private set; }
+        public string? Propriedade12 { get; private set; }
+        public string? Propriedade13 { get; private set; }
+        public string? Propriedade14 { get; private set; }
+        public string? Propriedade15 { get; private set; }
+        public string? Propriedade16 { get; private set; }
+        public string? Propriedade17 { get; private set; }
+        public string? Propriedade18 { get; private set; }
+        public string? Propriedade19 { get; private set; }
+        public string? Propriedade20 { get; private set; }
+        public decimal? Propriedade21 { get; private set; }
+        public string? Propriedade22 { get; private set; }
+        public int Propriedade23 { get; private set; }
+
+
 
         public IList<ClasseExemplo2> PropriedadeDeNavegacao { get; private set; } = new List<ClasseExemplo2>();
 

@@ -10,6 +10,6 @@ namespace Domain.Interfaces.Repositories
     public interface IRepository<T> where T : EntidadeBase
     {
         Task<EntidadePaginate<T>> ObterPaginado(int skip, int take);
-        Task<T> CriarEntidade();
+        Task CriarEntidade(T entidade);
     }
 }

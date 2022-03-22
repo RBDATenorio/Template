@@ -1,6 +1,9 @@
 using API.Extensions;
 using API.MapperConfiguration;
+using API.Utils;
+using Data;
 using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,10 +14,20 @@ var builder = WebApplication.CreateBuilder(args);
  * fluxo de processamento caso os dados da requisição estejam inválidos. */
 builder.Services.AddControllers().AddFluentValidation(fv => 
                             fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+
+var connectionConfig =
+    builder.Configuration.GetSection("TemplateConnection").Get<ConnectionSettings>(); 
+
+builder.Services.AddDbContext<Context>(opt => 
+                           opt.UseSqlServer(connectionConfig.ConnectionString));
+
 builder.Services.ResolverInjecaoDependencia();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

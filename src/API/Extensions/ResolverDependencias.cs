@@ -3,6 +3,9 @@ using Domain.Services;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using Data.Repository;
+using Domain.Entities;
+using Domain.Interfaces.Services;
+using Data;
 
 namespace API.Extensions
 {
@@ -16,6 +19,7 @@ namespace API.Extensions
         public static IServiceCollection ResolverInjecaoDependencia(this IServiceCollection services)
         {
             services.AddScoped<INotificacao, Notificacao>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClasseExemploRepository, ClasseExemploRepository>();
             services.AddScoped<IClasseExemploService, ClasseExemploService>();
 

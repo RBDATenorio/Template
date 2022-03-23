@@ -1,4 +1,5 @@
 ﻿using API.DTO.Request;
+using API.DTO.Response;
 using AutoMapper;
 using Domain.Entities;
 
@@ -9,6 +10,10 @@ namespace API.MapperConfiguration
         public MapperConfig()
         {
             CreateMap<ClasseExemploRequestDTO, ClasseExemplo>().ReverseMap();
+
+            CreateMap<ClasseExemplo, ClasseExemploResponse>();
+            CreateMap(typeof(EntidadePaginate<>), typeof(ClasseExemploResponseDTO<>));
+            //.ForMember(dest => dest.ItensResponse, opt => opt.MapFrom(src => src.Itens));
         }
     }
 }

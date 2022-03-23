@@ -18,9 +18,5 @@
             TemPaginaAnterior = indicePagina > 0;
             TemProximaPagina = (indicePagina+1) < TotalDePaginas;
         }
-
-
-
-
     }
 }

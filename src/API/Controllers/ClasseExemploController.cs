@@ -1,4 +1,5 @@
 ﻿using API.DTO.Request;
+using API.DTO.Response;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -28,7 +29,9 @@ namespace API.Controllers
         {
             var classeExemplosPaginada = await _classeExemploService.ObterPaginado(skip, take);
 
-            return Ok(classeExemplosPaginada);
+            var classeResponse = _mapper.Map<ClasseExemploResponseDTO<ClasseExemploResponse>>(classeExemplosPaginada);
+            return Ok(classeResponse);
+
         }
 
         [HttpPost]

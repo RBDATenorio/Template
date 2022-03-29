@@ -1,5 +1,6 @@
 ﻿using API.DTO.Request;
 using API.DTO.Response;
+using API.Utils.Caching;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -14,14 +15,16 @@ namespace API.Controllers
         private readonly INotificacao _notificacao;
         private readonly IClasseExemploService _classeExemploService;
         private readonly IMapper _mapper;
+        private readonly IRedisCache _cache;
 
-        public ClasseExemploController(IMapper mapper, 
+        public ClasseExemploController(IMapper mapper,
                                        IClasseExemploService classeExemploService,
-                                       INotificacao notificacao)
+                                       INotificacao notificacao, IRedisCache cache)
         {
             _classeExemploService = classeExemploService;
             _notificacao = notificacao;
             _mapper = mapper;
+            _cache = cache;
         }
 
         [HttpGet]
@@ -45,6 +48,10 @@ namespace API.Controllers
             await _classeExemploService.CriarEntidade(_mapper.Map<ClasseExemplo>(request));
 
             await _classeExemploService.SalvarAlteracoes();
+
+            var replica = new ClasseExemploReplica(127, 3, "primeiro teste com redis");
+
+            await _cache.SalvarNoRedis(replica);
 
             return Created($"api/ClasseExemplo/{request}", request);
         }

@@ -23,6 +23,8 @@ var connectionConfig =
 builder.Services.AddDbContext<Context>(opt => 
                            opt.UseSqlServer(connectionConfig.ConnectionString));
 
+builder.Services.AddStackExchangeRedisCache(opt => opt.Configuration = "localhost:6379");
+
 builder.Services.ResolverInjecaoDependencia();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

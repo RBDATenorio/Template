@@ -3,9 +3,8 @@ using Domain.Services;
 using Domain.Interfaces;
 using Domain.Interfaces.Repositories;
 using Data.Repository;
-using Domain.Entities;
-using Domain.Interfaces.Services;
 using Data;
+using API.Utils.Caching;
 
 namespace API.Extensions
 {
@@ -22,6 +21,7 @@ namespace API.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClasseExemploRepository, ClasseExemploRepository>();
             services.AddScoped<IClasseExemploService, ClasseExemploService>();
+            services.AddScoped<IRedisCache, RedisCache>();
 
             return services;
         }

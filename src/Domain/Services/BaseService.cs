@@ -8,10 +8,15 @@ namespace Domain.Services
     {
         private readonly IRepository<T> _repository;
         private readonly IUnitOfWork _unitOfWork;
-        public BaseService(IRepository<T> repo, IUnitOfWork unitOfWork)
+        private readonly IRedisCache _cache;
+
+        public BaseService(IRepository<T> repo, 
+                            IUnitOfWork unitOfWork, 
+                            IRedisCache cache)
         {
             _repository = repo;
             _unitOfWork = unitOfWork;
+            _cache = cache;
         }
 
         public async Task CriarEntidade(T entidade)
@@ -24,9 +29,18 @@ namespace Domain.Services
             return await _repository.ObterPaginado(skip, take);
         }
 
-        public async Task<bool> SalvarAlteracoes()
+        public async Task<bool> SalvarAlteracoes(Replica? replica, KeyValuePair<string, int>? contador, string chave = "")
         {
-            return await _unitOfWork.Commit();
+            var salvouAlteracoes = await _unitOfWork.Commit();
+
+            if(salvouAlteracoes)
+            {
+                if (replica != null && chave != "") await _cache.SalvarNoRedis(replica, contador, chave);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

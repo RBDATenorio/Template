@@ -5,13 +5,14 @@ using Domain.Interfaces.Repositories;
 using Data.Repository;
 using Data;
 using API.Utils.Caching;
+using Domain.Interfaces.Services;
 
 namespace API.Extensions
 {
-    /* O objetivo de se utilizar um método de extensão para resolver injeção de 
-     * dependência é somente para manter uma boa legibilidade do código. Especialmente
-     * no .NET 6 que não há mais a classe Startup em casos de muitos serviços podem 
-     * deixar o arquivo Program.cs muito poluído.
+    /* O objetivo de se utilizar um metodo de extensao para resolver injecao de 
+     * dependencia eh somente para manter uma boa legibilidade do codigo. Especialmente
+     * no .NET 6 que nao ha mais a classe Startup em casos de muitos servicos podem 
+     * deixar o arquivo Program.cs muito poluido.
      */
     public static class InjecaoDependencia
     {

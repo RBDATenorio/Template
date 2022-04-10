@@ -15,16 +15,14 @@ namespace API.Controllers
         private readonly INotificacao _notificacao;
         private readonly IClasseExemploService _classeExemploService;
         private readonly IMapper _mapper;
-        private readonly IRedisCache _cache;
 
         public ClasseExemploController(IMapper mapper,
                                        IClasseExemploService classeExemploService,
-                                       INotificacao notificacao, IRedisCache cache)
+                                       INotificacao notificacao)
         {
             _classeExemploService = classeExemploService;
             _notificacao = notificacao;
             _mapper = mapper;
-            _cache = cache;
         }
 
         [HttpGet]
@@ -37,23 +35,41 @@ namespace API.Controllers
 
         }
 
+        [HttpGet("contagem")]
+        public async Task<IActionResult> ObterContagem()
+        {
+            // TO-DO: Implementar a busca de contagem;
+            return Ok();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CadastrarNovoItem([FromBody] ClasseExemploRequestDTO request)
         {
-            if(_notificacao.TemNotificacoes())
+
+            var classeExemplo = _mapper.Map<ClasseExemplo>(request);
+
+            await _classeExemploService.CriarEntidade(classeExemplo);
+
+            var replica = new ClasseExemploReplica(classeExemplo.Propriedade1, classeExemplo.Propriedade2, 
+                                                    classeExemplo.Propriedade3, classeExemplo.ArquivadaEm);
+            
+            /* Essa rota é exclusiva para criar entidades, portanto o valor do contador nesse caso deve ser 1 */
+            await _classeExemploService.SalvarAlteracoes(replica, 
+                                                        new KeyValuePair<string, int>($"{nameof(classeExemplo)}", 1),
+                                                        $"{nameof(classeExemplo)}:{classeExemplo.Id}");
+            if (_notificacao.TemNotificacoes())
             {
                 return BadRequest(_notificacao.ObterNotificacoes());
             }
 
-            await _classeExemploService.CriarEntidade(_mapper.Map<ClasseExemplo>(request));
+            return Created($"api/ClasseExemplo/{classeExemplo.Id}", request);
+        }
 
-            await _classeExemploService.SalvarAlteracoes();
-
-            var replica = new ClasseExemploReplica(127, 3, "primeiro teste com redis");
-
-            await _cache.SalvarNoRedis(replica);
-
-            return Created($"api/ClasseExemplo/{request}", request);
+        [HttpPut]
+        public async Task<IActionResult> ArquivarItem(ClasseExemploRequestDTO request)
+        {
+            // Implementar o arquivamento
+            return Ok();
         }
     }
 }

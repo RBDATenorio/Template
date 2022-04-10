@@ -5,13 +5,19 @@
         /* propriedades comuns a todas entidades devem estar presentes
          * na classe base
          */
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
         public DateTime CadastradoEm { get; private set; }
         public DateTime? ArquivadaEm { get; private set; }
         public bool Ativa { get; private set; }
 
+        /* Usando GUID temos mais controle sobre as entidades, uma vez 
+         que, se utilizarmos o tipo int como chave primária, então depende-
+         remos do banco de dados para poder manipular as entidades nas re-
+         gras de negócio que envolvam transações, especialmente para 
+         recuperar os Ids */
         public EntidadeBase()
         {
+            Id = Guid.NewGuid();
             CadastradoEm = DateTime.Now;
             Ativa = true;
         }

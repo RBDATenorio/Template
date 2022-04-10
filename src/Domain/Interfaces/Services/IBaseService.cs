@@ -6,6 +6,6 @@ namespace Domain.Interfaces.Services
     {
         Task<EntidadePaginate<T>> ObterPaginado(int skip, int take);
         Task CriarEntidade(T entidade);
-        Task<bool> SalvarAlteracoes();
+        Task<bool> SalvarAlteracoes(Replica? replica, KeyValuePair<string, int>? contador, string chave = "");
     }
 }

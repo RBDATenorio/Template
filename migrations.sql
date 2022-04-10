@@ -5,7 +5,7 @@ use TemplateRedis;
 
 CREATE TABLE ClasseExemplos
 (
-	Id INT PRIMARY KEY IDENTITY,
+	Id UNIQUEIDENTIFIER PRIMARY KEY,
 	CadastradoEm DATE NOT NULL,
     ArquivadaEm DATE, 
     Ativa BIT NOT NULL,

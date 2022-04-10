@@ -13,8 +13,8 @@ namespace API.DTO.Validators
         public ClasseExemploRequestDTOValidator()
         {
             RuleFor(p => p.Propriedade1)
-                .GreaterThan(0)
-                .WithMessage("{PropertyName} deve ser maior que zero.");
+                .NotEmpty()
+                .WithMessage("{PropertyName} é obrigatório.");
 
             RuleFor(p => p.Propriedade3)
                 .NotEmpty()

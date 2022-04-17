@@ -1,6 +1,7 @@
 ﻿using API.DTO.Request;
 using API.DTO.Response;
 using API.Utils.Caching;
+using API.Utils.Caching.Replicas;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -59,7 +60,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> ArquivarItem(ClasseExemploRequestDTO request)
         {
-            // Implementar o arquivamento
+            //await _classeExemploService.Arquivar();
             return Ok();
         }
 
@@ -69,17 +70,24 @@ namespace API.Controllers
             var arquivadas = await _classeExemploService.ObterContagem(a => a.ArquivadaEm != null);
             var outroExemplo = await _classeExemploService.ObterContagem(a => a.Propriedade2 > 0);
 
-            _cache.AtualizarContagem("ClasseExemplo:total", arquivadas);
+            _cache.AtualizarContagem("ClasseExemplo:arquivadas", arquivadas);
             _cache.AtualizarContagem("ClasseExemplo:Propriedade2", outroExemplo);
 
             return Ok();
         }
-
+        /// <summary>
+        /// Rota utilizada exclusivamente para scheduler
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("AtualizarReplicasNoCache/")]
         public async Task<IActionResult> AtualizarReplicas()
         {
-
-            //await _cache.SalvarReplicaNoRedis("", replica);
+            var classeExemplos = await _classeExemploService.ObterTodos();
+            foreach(var classeExemplo in classeExemplos)
+            {
+                var replica = _mapper.Map<ClasseExemploReplica>(classeExemplo);
+                await _cache.SalvarReplicaNoRedis($"ClasseExemplo:{replica.Id}", replica);
+            }
             return Ok();
         }
 

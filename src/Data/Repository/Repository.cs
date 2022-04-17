@@ -36,5 +36,10 @@ namespace Data.Repository
 
             return new EntidadePaginate<T>(totalItens, dados, skip, take);
         }
+
+        public async Task<IList<T>> ObterTodos()
+        {
+            return await _context.Set<T>().AsNoTracking().ToListAsync();
+        }
     }
 }

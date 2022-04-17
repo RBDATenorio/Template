@@ -36,5 +36,10 @@ namespace Domain.Services
         {
             return await _unitOfWork.Commit();
         }
+
+        public async Task<IList<T>> ObterTodos()
+        {
+            return await _repository.ObterTodos();
+        }
     }
 }

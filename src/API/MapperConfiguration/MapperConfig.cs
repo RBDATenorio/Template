@@ -1,5 +1,6 @@
 ﻿using API.DTO.Request;
 using API.DTO.Response;
+using API.Utils.Caching.Replicas;
 using AutoMapper;
 using Domain.Entities;
 
@@ -13,7 +14,7 @@ namespace API.MapperConfiguration
 
             CreateMap<ClasseExemplo, ClasseExemploResponse>();
             CreateMap(typeof(EntidadePaginate<>), typeof(ClasseExemploResponseDTO<>));
-            //.ForMember(dest => dest.ItensResponse, opt => opt.MapFrom(src => src.Itens));
+            CreateMap<ClasseExemplo, ClasseExemploReplica>();
         }
     }
 }

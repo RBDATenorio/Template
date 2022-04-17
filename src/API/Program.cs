@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-/* Importante efetuar as validações dos DTOs para que não se permita prosseguir com o 
- * fluxo de processamento caso os dados da requisição estejam inválidos. */
+/* Importante efetuar as validacoes dos DTOs para que nao se permita prosseguir com o 
+ * fluxo de processamento caso os dados da requisicao estejam invalidos. */
 builder.Services.AddControllers().AddFluentValidation(fv => 
                             fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 

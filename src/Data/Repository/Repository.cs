@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Data.Repository
 {
@@ -11,6 +12,11 @@ namespace Data.Repository
         public Repository(Context context)
         {
             _context = context;
+        }
+
+        public async Task<int> Contagem(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().AsNoTracking().Where(predicate).CountAsync();
         }
 
         public async Task CriarEntidade(T entidade)

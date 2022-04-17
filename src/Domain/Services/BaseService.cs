@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
+using System.Linq.Expressions;
 
 namespace Domain.Services 
 {
@@ -8,15 +9,12 @@ namespace Domain.Services
     {
         private readonly IRepository<T> _repository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRedisCache _cache;
 
         public BaseService(IRepository<T> repo, 
-                            IUnitOfWork unitOfWork, 
-                            IRedisCache cache)
+                            IUnitOfWork unitOfWork)
         {
             _repository = repo;
             _unitOfWork = unitOfWork;
-            _cache = cache;
         }
 
         public async Task CriarEntidade(T entidade)
@@ -29,18 +27,14 @@ namespace Domain.Services
             return await _repository.ObterPaginado(skip, take);
         }
 
-        public async Task<bool> SalvarAlteracoes(Replica? replica, KeyValuePair<string, int>? contador, string chave = "")
+        public async Task<int> ObterContagem(Expression<Func<T, bool>> predicate)
         {
-            var salvouAlteracoes = await _unitOfWork.Commit();
+            return await _repository.Contagem(predicate);
+        }
 
-            if(salvouAlteracoes)
-            {
-                if (replica != null && chave != "") await _cache.SalvarNoRedis(replica, contador, chave);
-
-                return true;
-            }
-
-            return false;
+        public async Task<bool> SalvarAlteracoes()
+        {
+            return await _unitOfWork.Commit();
         }
     }
 }

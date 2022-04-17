@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Domain.Interfaces.Services
 {
@@ -6,6 +7,7 @@ namespace Domain.Interfaces.Services
     {
         Task<EntidadePaginate<T>> ObterPaginado(int skip, int take);
         Task CriarEntidade(T entidade);
-        Task<bool> SalvarAlteracoes(Replica? replica, KeyValuePair<string, int>? contador, string chave = "");
+        Task<bool> SalvarAlteracoes();
+        Task<int> ObterContagem(Expression<Func<T, bool>> predicate);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Domain.Interfaces.Repositories
 {
@@ -11,5 +12,6 @@ namespace Domain.Interfaces.Repositories
     {
         Task<EntidadePaginate<T>> ObterPaginado(int skip, int take);
         Task CriarEntidade(T entidade);
+        Task<int> Contagem(Expression<Func<T, bool>> predicate);
     }
 }

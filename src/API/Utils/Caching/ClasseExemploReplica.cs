@@ -2,7 +2,7 @@
 
 namespace API.Utils.Caching
 {
-    public class ClasseExemploReplica : Replica
+    public class ClasseExemploReplica : IReplica
     {
         public int Propriedade1 { get; private set; }
         public int Propriedade2 { get; private set; }

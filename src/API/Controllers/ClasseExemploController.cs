@@ -57,11 +57,11 @@ namespace API.Controllers
             return Created($"api/ClasseExemplo/{classeExemplo.Id}", request);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> ArquivarItem(ClasseExemploRequestDTO request)
+        [HttpGet("obterDoCache")]
+        public async Task<ActionResult<IEnumerable<ClasseExemploReplica>>> ObterTodosDoCache()
         {
-            //await _classeExemploService.Arquivar();
-            return Ok();
+            var replicas = await _cache.ObterTodosComPattern($"ClasseExemplo:*");
+            return Ok(replicas);
         }
 
         [HttpPost("AtualizarContagemDoCache/")]
@@ -70,8 +70,8 @@ namespace API.Controllers
             var arquivadas = await _classeExemploService.ObterContagem(a => a.ArquivadaEm != null);
             var outroExemplo = await _classeExemploService.ObterContagem(a => a.Propriedade2 > 0);
 
-            _cache.AtualizarContagem("ClasseExemplo:arquivadas", arquivadas);
-            _cache.AtualizarContagem("ClasseExemplo:Propriedade2", outroExemplo);
+            _cache.AtualizarContagem("Contagem:ClasseExemplo:arquivadas", arquivadas);
+            _cache.AtualizarContagem("Contagem:ClasseExemplo:Propriedade2", outroExemplo);
 
             return Ok();
         }

@@ -5,7 +5,6 @@ using Domain.Interfaces.Repositories;
 using Data.Repository;
 using Data;
 using API.Utils.Caching;
-using Domain.Interfaces.Services;
 
 namespace API.Extensions
 {
@@ -23,6 +22,7 @@ namespace API.Extensions
             services.AddScoped<IClasseExemploRepository, ClasseExemploRepository>();
             services.AddScoped<IClasseExemploService, ClasseExemploService>();
             services.AddScoped<IRedisCache, RedisCache>();
+            services.AddScoped<IRedisConnectionMultiplexer, RedisConnectionMultiplexer>();
 
             return services;
         }

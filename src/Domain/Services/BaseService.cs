@@ -41,5 +41,10 @@ namespace Domain.Services
         {
             return await _repository.ObterTodos();
         }
+
+        public async Task<IEnumerable<T>> ObterPorProp(Expression<Func<T, bool>> predicate)
+        {
+            return await _repository.ObterPorProp(predicate);
+        }
     }
 }

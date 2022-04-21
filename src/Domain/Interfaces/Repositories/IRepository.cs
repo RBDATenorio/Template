@@ -8,11 +8,12 @@ namespace Domain.Interfaces.Repositories
      * outro projeto só para resolver as dependências dos serviços é plausível utilizar
      * as interfaces no próprio domínio.
     */
-    public interface IRepository<T> where T : EntidadeBase
+    public interface IRepository<T> : IDisposable where T : EntidadeBase
     {
         Task<IList<T>> ObterTodos();
         Task<EntidadePaginate<T>> ObterPaginado(int skip, int take);
         Task CriarEntidade(T entidade);
+        Task<IEnumerable<T>> ObterPorProp(Expression<Func<T, bool>> predicate);
         Task<int> Contagem(Expression<Func<T, bool>> predicate);
     }
 }

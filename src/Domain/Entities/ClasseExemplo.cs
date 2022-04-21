@@ -43,6 +43,10 @@
             Propriedade1 = prop1;
             Propriedade2 = prop2;
             Propriedade3 = prop3;
+            Propriedade11 = $"{DateTime.Now.Year}";
+            Propriedade20 = $"{DateTime.Now.Year}";
+            Propriedade21 = 2.1m + prop1;
+
         }
 
         public bool AlterarValorDaPropriedadeDeNavegacao(int novoValor, int idPropriedadeDeNavegacao) 

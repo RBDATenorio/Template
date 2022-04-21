@@ -41,5 +41,14 @@ namespace Data.Repository
         {
             return await _context.Set<T>().AsNoTracking().ToListAsync();
         }
+        public async Task<IEnumerable<T>> ObterPorProp(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().AsNoTracking().Where(predicate).ToListAsync();
+        }
+        public void Dispose()
+        {
+            _context?.Dispose();
+        }
+
     }
 }

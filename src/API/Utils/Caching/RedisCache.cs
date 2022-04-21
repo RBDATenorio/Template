@@ -18,21 +18,15 @@ namespace API.Utils.Caching
             _replicas = new List<ClasseExemploReplica>();
         }
 
-        public async Task<IEnumerable<ClasseExemploReplica>> ObterTodosComPattern(string pattern)
+        public IEnumerable<ClasseExemploReplica> ObterTodosComPattern(string pattern)
         {
-            var chaves = _conn.GetKeys(pattern).ToList();
-            
-            foreach(var chave in chaves)
-            {
-                var replica = JsonConvert.DeserializeObject<ClasseExemploReplica>(_cache.GetString(chave.ToString()));
-                
-                if(replica != null) _replicas.Add(replica);
-            }
+            var objetosEmCache = _cache.GetString(pattern);
+            var replicaSerialized = JsonConvert.DeserializeObject<IList<ClasseExemploReplica>>(objetosEmCache);
 
-            return _replicas;
+            return replicaSerialized;
         }
 
-        public async void AtualizarContagem(string chave, int valor)
+        public void AtualizarContagem(string chave, int valor)
         {
             if (chave != "")
             {
@@ -40,15 +34,12 @@ namespace API.Utils.Caching
             }
         }
 
-        public async Task SalvarReplicaNoRedis(string chave, IReplica replica)
+        public async Task SalvarReplicasNoRedis(string chave, IList<ClasseExemploReplica> replica)
         {
-            if(chave != "")
-            {
-                var replicaSerialized = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(replica));
-                var options = new DistributedCacheEntryOptions()
-                                 .SetAbsoluteExpiration(DateTime.Now.AddDays(30));
-                await _cache.SetAsync(chave, replicaSerialized, options);
-            }
+            var replicasSerialized = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(replica));
+            var options = new DistributedCacheEntryOptions()
+                 .SetAbsoluteExpiration(DateTime.Now.AddDays(30));
+            await _cache.SetAsync(chave, replicasSerialized, options);
         }
     }
 }

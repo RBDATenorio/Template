@@ -9,6 +9,7 @@ namespace Domain.Interfaces.Services
         Task<EntidadePaginate<T>> ObterPaginado(int skip, int take);
         Task CriarEntidade(T entidade);
         Task<bool> SalvarAlteracoes();
+        Task<IEnumerable<T>> ObterPorProp(Expression<Func<T, bool>> predicate);
         Task<int> ObterContagem(Expression<Func<T, bool>> predicate);
     }
 }

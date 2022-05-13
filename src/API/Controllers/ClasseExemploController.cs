@@ -1,7 +1,7 @@
 ﻿using API.DTO.Request;
 using API.DTO.Response;
 using API.Utils.Caching;
-using API.Utils.Caching.Replicas;
+using Data.Caching.Replicas;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -30,7 +30,7 @@ namespace API.Controllers
         }
 
         [HttpGet("paginado/")]
-        public async Task<IActionResult> ObterPaginado([FromQuery] int skip, [FromQuery] int take)
+        public async Task<IActionResult> ObterPaginado([FromQuery] int skip = 0, [FromQuery] int take = 10)
         {
             var classeExemplosPaginada = await _classeExemploService.ObterPaginado(skip, take);
 

@@ -1,4 +1,4 @@
-﻿namespace API.Utils.Caching.Replicas
+﻿namespace Data.Caching.Replicas
 {
     public class ClasseExemploReplica : IReplica
     {

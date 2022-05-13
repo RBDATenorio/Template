@@ -1,6 +1,6 @@
 ﻿using API.DTO.Request;
 using API.DTO.Response;
-using API.Utils.Caching.Replicas;
+using Data.Caching.Replicas;
 using AutoMapper;
 using Domain.Entities;
 

@@ -24,7 +24,7 @@ namespace Data.Repository
             await _context.Set<T>().AddAsync(entidade);
         }
 
-        public async Task<EntidadePaginate<T>> ObterPaginado(int skip, int take)
+        public async Task<EntidadePaginate<T>> ObterPaginado(int skip = 0, int take = 10)
         {
             var totalItens = await _context.Set<T>().CountAsync();
 

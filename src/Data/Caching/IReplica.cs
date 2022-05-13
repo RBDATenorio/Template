@@ -1,4 +1,4 @@
-namespace API.Utils.Caching
+namespace Data.Caching
 {
     public interface IReplica
     {

@@ -1,4 +1,4 @@
-﻿using API.Utils.Caching.Replicas;
+﻿using Data.Caching.Replicas;
 using Domain.Entities;
 
 namespace API.Utils.Caching
